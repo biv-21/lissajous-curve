@@ -19,12 +19,19 @@ class Canvas {
   }
 
   #calcSize(container) {
-    const { width: containerWidth } = container.getBoundingClientRect();
+    const { width: containerWidth, top: containerTop } =
+      container.getBoundingClientRect();
+    const bottomPadding = 8;
 
-    const width = containerWidth;
-    const height = Math.floor(
+    let width = containerWidth;
+    let height = Math.floor(
       (this.#heightFraction * width) / this.#widthFraction
     );
+
+    if (Math.floor(containerTop + height) > window.innerHeight) {
+      height = Math.floor(window.innerHeight - (containerTop + bottomPadding));
+      width = Math.floor((this.#widthFraction * height) / this.#heightFraction);
+    }
 
     return {
       width,
